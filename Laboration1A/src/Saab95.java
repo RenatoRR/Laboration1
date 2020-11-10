@@ -1,14 +1,12 @@
 import java.awt.*;
 
-public class Saab95{
+/** This class creates a Saab95 object/car. It inherits the {@code Vehicle} class that contains common values needed. */
 
-    public boolean turboOn;
-    public int nrDoors; // Number of doors on the car
-    public double enginePower; // Engine power of the car
-    public double currentSpeed; // The current speed of the car
-    public Color color; // Color of the car
-    public String modelName; // The car model name
-    
+public class Saab95 extends Vehicle{
+    /** A boolean variable to see if turbo is on or off. */
+    private boolean turboOn;
+
+    /** The constructor to initialize certain fields and methods.*/
     public Saab95(){
         nrDoors = 2;
         color = Color.red;
@@ -17,63 +15,58 @@ public class Saab95{
         modelName = "Saab95";
         stopEngine();
     }
-    
-    public int getNrDoors(){
-        return nrDoors;
-    }
-    public double getEnginePower(){
-        return enginePower;
-    }
 
-    public double getCurrentSpeed(){
-        return currentSpeed;
-    }
 
-    public Color getColor(){
-        return color;
-    }
-
-    public void setColor(Color clr){
-	    color = clr;
-    }
-
-    public void startEngine(){
-	    currentSpeed = 0.1;
-    }
-
-    public void stopEngine(){
-	    currentSpeed = 0;
-    }
-
+    /** Turns the turbo on by setting {@code turboOn = true}*/
     public void setTurboOn(){
 	    turboOn = true;
     }
-
+    /** Turns the turbo off by setting {@code turboOn = false}*/
     public void setTurboOff(){
 	    turboOn = false;
     }
-    
+
+    /** This methods calculates the speedfactor of the car. Different values if {@code turboOn} is true or false.*/
     public double speedFactor(){
         double turbo = 1;
         if(turboOn) turbo = 1.3;
         return enginePower * 0.01 * turbo;
     }
 
+    /** This method increases the current speed of the car by a percentage of {@code speedFactor}.
+     * {@code currentSpeed} can never be outside of the interval {@code [0,enginePower]} so
+     * {@code acceptableInterval} is used in method.*/
     public void incrementSpeed(double amount){
-        currentSpeed = getCurrentSpeed() + speedFactor() * amount;
+        if (acceptableInterval((getCurrentSpeed() + speedFactor() * amount),0,getEnginePower()) ) {
+            currentSpeed = getCurrentSpeed() + speedFactor() * amount;
+        }
     }
 
+    /** This method decreases the current speed of the car by a percentage of {@code speedFactor}.
+     * {@code currentSpeed} can never be outside of the interval {@code [0,enginePower]} so
+     * {@code acceptableInterval} is used in method.*/
     public void decrementSpeed(double amount){
-        currentSpeed = getCurrentSpeed() - speedFactor() * amount;
+        if (acceptableInterval((getCurrentSpeed() - speedFactor() * amount),0,getEnginePower()) ) {
+            currentSpeed = getCurrentSpeed() - speedFactor() * amount;
+        }
+
     }
-    
+
+
     // TODO fix this method according to lab pm
+    /** This method enters an amount as an argument in {@code incrementSpeed} if the amount is between [0,1] (0% to 100%)*/
     public void gas(double amount){
-        incrementSpeed(amount);
+        if(acceptableInterval(amount, 0,1)) {
+            incrementSpeed(amount);
+        }
     }
 
     // TODO fix this method according to lab pm
+    /** This method enters an amount as an argument in {@code decrementSpeed} if the amount is between [0,1] (0% to 100%)*/
     public void brake(double amount){
-        decrementSpeed(amount);
+        if(acceptableInterval(amount,0,1)) {
+            decrementSpeed(amount);
+        }
     }
 }
+
