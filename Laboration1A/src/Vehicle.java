@@ -8,9 +8,6 @@ import java.awt.*;
  * @author Renato Roos Radevski
  * */
 public abstract class Vehicle extends DoublePoint implements Movable{
-    /** An array of integers made in order to make {@code move()} into a single line method.
-     * Because south and north, west and east are opposites there is a need to multiply with a multiples in a specific order.*/
-    private final int[] alternatingStatesForDirection = {1,0,-1,0};
 
     /** A variable showing how many doors a vehicle have. */
     protected int nrDoors;
@@ -28,10 +25,19 @@ public abstract class Vehicle extends DoublePoint implements Movable{
     protected String modelName;
 
     /** The current position of the vehicle in the form of a point with a x and a y coordinate.*/
-    protected DoublePoint currentPoint = new DoublePoint();
+    protected DoublePoint currentPoint;
 
     /** The current direction of the vehicle. Default value of field is {@code NORTH} that is represented as the integer value 0 */
     protected int currentDirection = NORTH;
+
+    public Vehicle(int nrDoors, double enginePower, Color colour, String modelName) {
+        this.nrDoors = nrDoors;
+        this.enginePower = enginePower;
+        this.color = colour;
+        this.modelName = modelName;
+        this.currentPoint = new DoublePoint();
+        stopEngine();
+    }
 
     /** A method to access and fetch {@code nrDoors} outside of class hierarchy.*/
     public int getNrDoors(){ return nrDoors; }
@@ -86,8 +92,35 @@ public abstract class Vehicle extends DoublePoint implements Movable{
         setCurrentDirection(((currentDirection-1)+4)%4);
     }
 
+
     /** This is to see if a value is in a interval of doubles.*/
     protected boolean acceptableInterval(double value, double lowerValue, double upperValue){
         return value >= lowerValue && value <= upperValue;
+    }
+
+    /**
+     * Abstract method to enable overriding in subclasses of this particular method
+     * @param amount used as an multiplier
+     */
+    protected abstract void incrementSpeed(double amount);
+
+    /**
+     * Abstract method to enable overriding in subclasses of this particular method
+     * @param amount used as an multiplier
+     */
+    protected abstract void decrementSpeed(double amount);
+
+    /** This method enters an amount as an argument in {@code incrementSpeed} if the amount is between [0,1] (0% to 100%)*/
+    public void gas(double amount) {
+        if (acceptableInterval(amount,0,1)) {
+            incrementSpeed(amount);
+        }
+    }
+
+    /** This method enters an amount as an argument in {@code decrementSpeed} if the amount is between [0,1] (0% to 100%)*/
+    public void brake(double amount){
+        if(acceptableInterval(amount,0,1)) {
+            decrementSpeed(amount);
+        }
     }
 }

@@ -2,20 +2,14 @@ import java.awt.*;
 
 /** This class creates a Saab95 object/car. It inherits the {@code Vehicle} class that contains common values needed. */
 
-public class Saab95 extends Vehicle{
+public class Saab95 extends Vehicle implements Transportable{
     /** A boolean variable to see if turbo is on or off. */
     private boolean turboOn;
 
     /** The constructor to initialize certain fields and methods.*/
     public Saab95(){
-        nrDoors = 2;
-        color = Color.red;
-        enginePower = 125;
-	    turboOn = false;
-        modelName = "Saab95";
-        stopEngine();
+        super(2,125,Color.red,"Saab95");
     }
-
 
     /** Turns the turbo on by setting {@code turboOn = true}*/
     public void setTurboOn(){
@@ -36,6 +30,7 @@ public class Saab95 extends Vehicle{
     /** This method increases the current speed of the car by a percentage of {@code speedFactor}.
      * {@code currentSpeed} can never be outside of the interval {@code [0,enginePower]} so
      * {@code acceptableInterval} is used in method.*/
+    @Override
     public void incrementSpeed(double amount){
         if (acceptableInterval((getCurrentSpeed() + speedFactor() * amount),0,getEnginePower()) ) {
             currentSpeed = getCurrentSpeed() + speedFactor() * amount;
@@ -45,27 +40,10 @@ public class Saab95 extends Vehicle{
     /** This method decreases the current speed of the car by a percentage of {@code speedFactor}.
      * {@code currentSpeed} can never be outside of the interval {@code [0,enginePower]} so
      * {@code acceptableInterval} is used in method.*/
+    @Override
     public void decrementSpeed(double amount){
         if (acceptableInterval((getCurrentSpeed() - speedFactor() * amount),0,getEnginePower()) ) {
             currentSpeed = getCurrentSpeed() - speedFactor() * amount;
-        }
-
-    }
-
-
-    // TODO fix this method according to lab pm
-    /** This method enters an amount as an argument in {@code incrementSpeed} if the amount is between [0,1] (0% to 100%)*/
-    public void gas(double amount){
-        if(acceptableInterval(amount, 0,1)) {
-            incrementSpeed(amount);
-        }
-    }
-
-    // TODO fix this method according to lab pm
-    /** This method enters an amount as an argument in {@code decrementSpeed} if the amount is between [0,1] (0% to 100%)*/
-    public void brake(double amount){
-        if(acceptableInterval(amount,0,1)) {
-            decrementSpeed(amount);
         }
     }
 }

@@ -34,6 +34,11 @@ public class DoublePoint {
         this.y = y;
     }
 
+    public void setLocation(DoublePoint location){
+        this.x = location.getX();
+        this.y = location.getY();
+    }
+
     /** Moves the point coordinates with the change dx and dy. */
     public void translate(double dx, double dy){
         this.x += dx;

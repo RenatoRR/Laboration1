@@ -8,6 +8,10 @@ public interface Movable {
     int SOUTH = 2;
     int EAST = 3;
 
+    /** An array of integers made in order to make {@code move()} into a single line method.
+     * Because south and north, west and east are opposites there is a need to multiply with a multiples in a specific order.*/
+    int[] alternatingStatesForDirection = {1,0,-1,0};
+
     /** Makes the car move when implemented.*/
     void move();
 
